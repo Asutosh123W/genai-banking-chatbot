@@ -1,0 +1,415 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+
+  background:
+    radial-gradient(
+      circle at top,
+      #0f1d45,
+      #081229
+    );
+
+  color: white;
+}
+
+#root {
+  width: 100%;
+}
+
+.app {
+
+  width: 92%;
+
+  max-width: 1350px;
+
+  margin: auto;
+
+  padding: 20px;
+}
+
+/* HERO */
+
+.hero-section {
+
+  text-align: center;
+
+  margin-top: 20px;
+
+  margin-bottom: 60px;
+}
+
+.logo-circle {
+
+  width: 95px;
+  height: 95px;
+
+  margin: auto;
+  margin-bottom: 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #3b82f6
+  );
+
+  font-size: 44px;
+
+  box-shadow:
+    0 0 35px
+    rgba(37, 99, 235, 0.55);
+}
+
+h1 {
+
+  margin: 0;
+
+  font-size: 64px;
+
+  font-weight: 800;
+
+  line-height: 1.2;
+
+  text-align: center;
+
+  word-break: break-word;
+
+  background: linear-gradient(
+    90deg,
+    #ffffff,
+    #93c5fd,
+    #3b82f6
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  letter-spacing: 1px;
+}
+
+.subtitle {
+
+  margin-top: 16px;
+
+  color: #9ca3af;
+
+  font-size: 20px;
+
+  letter-spacing: 0.5px;
+}
+
+/* Upload */
+
+.upload-section {
+
+  display: flex;
+
+  justify-content: center;
+
+  margin-top: 35px;
+
+  margin-bottom: 40px;
+}
+
+.upload-card {
+
+  width: 100%;
+
+  max-width: 760px;
+
+  background:
+    rgba(17, 28, 54, 0.9);
+
+  border-radius: 22px;
+
+  padding: 35px;
+
+  text-align: center;
+
+  border: 2px dashed #2563eb;
+
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 10px 35px
+    rgba(0, 0, 0, 0.25);
+}
+
+.upload-icon {
+
+  font-size: 60px;
+
+  margin-bottom: 15px;
+}
+
+.file-input {
+
+  margin-top: 10px;
+
+  margin-bottom: 18px;
+
+  color: white;
+
+  font-size: 16px;
+}
+
+.selected-file {
+
+  margin-bottom: 18px;
+
+  color: #93c5fd;
+
+  font-size: 17px;
+}
+
+.upload-btn {
+
+  width: 100%;
+}
+
+.upload-message {
+
+  margin-top: 18px;
+
+  color: #86efac;
+
+  font-size: 16px;
+}
+
+/* Actions */
+
+.top-actions {
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  margin-bottom: 12px;
+}
+
+.clear-btn {
+
+  width: 170px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ef4444,
+      #dc2626
+    );
+}
+
+.clear-btn:hover {
+
+  background:
+    linear-gradient(
+      135deg,
+      #dc2626,
+      #b91c1c
+    );
+}
+
+/* Chat */
+
+.chat-container {
+
+  background:
+    rgba(17, 28, 54, 0.95);
+
+  border-radius: 20px;
+
+  padding: 28px;
+
+  height: 520px;
+
+  overflow-y: auto;
+
+  margin-bottom: 25px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  box-shadow:
+    0 10px 30px
+    rgba(0, 0, 0, 0.25);
+}
+
+.chat-wrapper {
+
+  display: flex;
+
+  flex-direction: column;
+
+  margin-bottom: 24px;
+}
+
+.user-wrapper {
+
+  align-items: flex-end;
+}
+
+.bot-wrapper {
+
+  align-items: flex-start;
+}
+
+.chat-bubble {
+
+  padding: 18px 22px;
+
+  border-radius: 18px;
+
+  max-width: 72%;
+
+  line-height: 1.8;
+
+  white-space: pre-wrap;
+
+  word-wrap: break-word;
+
+  font-size: 20px;
+
+  box-shadow:
+    0 6px 20px
+    rgba(0, 0, 0, 0.2);
+}
+
+.user {
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #3b82f6
+    );
+}
+
+.bot {
+
+  background: #374151;
+}
+
+.timestamp {
+
+  font-size: 12px;
+
+  color: #9ca3af;
+
+  margin-top: 6px;
+}
+
+/* Input */
+
+.input-section {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+textarea {
+
+  height: 130px;
+
+  border-radius: 16px;
+
+  border: none;
+
+  padding: 20px;
+
+  font-size: 19px;
+
+  resize: none;
+
+  background: #3b3b3b;
+
+  color: white;
+
+  box-shadow:
+    0 6px 18px
+    rgba(0, 0, 0, 0.2);
+}
+
+textarea::placeholder {
+
+  color: #bdbdbd;
+}
+
+button {
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #3b82f6
+    );
+
+  color: white;
+
+  border: none;
+
+  padding: 17px;
+
+  border-radius: 14px;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+button:hover {
+
+  transform: scale(1.02);
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+  .app {
+
+    width: 95%;
+  }
+
+  h1 {
+
+    font-size: 42px;
+  }
+
+  .subtitle {
+
+    font-size: 16px;
+  }
+
+  .chat-bubble {
+
+    max-width: 88%;
+
+    font-size: 16px;
+  }
+
+  textarea {
+
+    font-size: 16px;
+  }
+
+  button {
+
+    font-size: 17px;
+  }
+
+  .upload-card {
+
+    padding: 24px;
+  }
+}
