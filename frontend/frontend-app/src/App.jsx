@@ -192,10 +192,13 @@ function App() {
           GenAI Banking Chatbot
         </h1>
 
-        <p className="subtitle">
-          Intelligent RAG-powered AI Assistant
-          for Document Question Answering
-        </p>
+       <p className="subtitle">
+  Intelligent RAG-powered AI Assistant for Document Question Answering
+</p>
+
+<p className="backend-note">
+  Backend currently runs locally using Ollama + Mistral.
+</p>
 
       </div>
 

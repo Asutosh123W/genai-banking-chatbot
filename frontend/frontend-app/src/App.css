@@ -103,6 +103,19 @@ h1 {
   letter-spacing: 0.5px;
 }
 
+.backend-note {
+
+  margin-top: 10px;
+
+  font-size: 15px;
+
+  color: #94a3b8;
+
+  letter-spacing: 0.3px;
+
+  opacity: 0.9;
+}
+
 /* Upload */
 
 .upload-section {
@@ -389,6 +402,11 @@ button:hover {
   .subtitle {
 
     font-size: 16px;
+  }
+
+  .backend-note {
+
+    font-size: 13px;
   }
 
   .chat-bubble {
