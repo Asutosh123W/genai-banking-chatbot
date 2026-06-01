@@ -146,14 +146,15 @@ const loadSession = async (
 
   try {
 
-    const response = await fetch(
+    const response = await apiFetch(
       `http://127.0.0.1:8000/sessions/${sessionId}/messages`,
       {
         headers: {
           Authorization:
             `Bearer ${token}`
         }
-      }
+      },
+      logout
     );
 
     const data =
@@ -210,7 +211,7 @@ const deleteSession = async (
 
   try {
 
-    await fetch(
+    await apiFetch(
       `http://127.0.0.1:8000/sessions/${sessionId}`,
       {
         method: "DELETE",
@@ -265,7 +266,7 @@ const renameSession = async (
 
   try {
 
-    await fetch(
+    await apiFetch(
       `http://127.0.0.1:8000/sessions/${sessionId}`,
       {
         method: "PUT",
@@ -330,7 +331,7 @@ const fetchStats = async () => {
   try {
 
     const response = await apiFetch(
-  `http://127.0.0.1:8000/documents/${knowledgeBase}`,
+  `http://127.0.0.1:8000/stats/${knowledgeBase}`,
   {
     headers: {
       Authorization:
@@ -364,7 +365,7 @@ const deleteDocument = async (filename) => {
 
   try {
 
-    await fetch(
+    await apiFetch(
   `http://127.0.0.1:8000/documents/${knowledgeBase}/${filename}`,
   {
     method: "DELETE",
@@ -373,7 +374,8 @@ const deleteDocument = async (filename) => {
       Authorization:
         `Bearer ${token}`
     }
-  }
+  },
+  logout
 );
 
     fetchDocuments();
@@ -555,7 +557,7 @@ formData.append(
 
     try {
 
-      const response = await fetch(
+      const response = await apiFetch(
   "http://127.0.0.1:8000/upload",
   {
     method: "POST",
@@ -566,7 +568,8 @@ formData.append(
     },
 
     body: formData
-  }
+  },
+  logout
 );
 
       const data = await response.json();
@@ -593,6 +596,9 @@ formData.append(
   // Ask question
   const askQuestion = async () => {
 
+    if (loading) return;
+
+
     if (!message.trim()) return;
 
     const userMessage = message;
@@ -611,8 +617,8 @@ formData.append(
 
     try {
 
-      const response = await fetch(
-        "http://127.0.0.1:8000/chat",
+      const response = await apiFetch(
+        "http://127.0.0.1:8000/chat-stream",
         {
           method: "POST",
           headers: {
@@ -633,22 +639,65 @@ formData.append(
         logout
       );
 
-      const data = await response.json();
+      const reader =
+  response.body.getReader();
+
+const decoder =
+  new TextDecoder();
+
+let streamedText = "";
+
+const botMessageIndex =
+  chatHistory.length + 1;
 
 setChatHistory((prev) => [
   ...prev,
   {
     type: "bot",
-    text:
-      data.response ||
-      "No response generated",
-
-    sources:
-      data.sources || [],
-
+    text: "",
+    sources: [],
     time: getCurrentTime()
   }
 ]);
+
+while (true) {
+
+  const {
+    done,
+    value
+  } = await reader.read();
+
+  if (done) {
+    break;
+  }
+
+  const chunk =
+    decoder.decode(value);
+
+  streamedText += chunk;
+
+  setChatHistory((prev) => {
+
+    const updated = [...prev];
+
+    updated[
+      updated.length - 1
+    ] = {
+      ...updated[
+        updated.length - 1
+      ],
+      text: streamedText
+    };
+
+    return updated;
+
+  });
+
+}
+
+await loadSession(
+  currentSessionId
+);
 
 fetchSessions();
 
@@ -1061,11 +1110,51 @@ fetchSessions();
 
       {/* Chat Area */}
       <div
-        className="chat-container"
-        ref={chatContainerRef}
-      >
+  className="chat-container"
+  ref={chatContainerRef}
+>
 
-        {chatHistory.map((chat, index) => (
+  {chatHistory.length === 0 && !loading && (
+
+    <div className="welcome-screen">
+
+      <div className="welcome-icon">
+        🤖
+      </div>
+
+      <h2>
+        Welcome to GenAI Banking Chatbot
+      </h2>
+
+      <p>
+        Ask questions from your uploaded documents and knowledge bases.
+      </p>
+
+      <div className="welcome-features">
+
+        <div>
+          📄 Upload PDF Documents
+        </div>
+
+        <div>
+          🔍 Search Knowledge Bases
+        </div>
+
+        <div>
+          💬 Create Multiple Chat Sessions
+        </div>
+
+        <div>
+          ⚡ Get AI-Powered Answers
+        </div>
+
+      </div>
+
+    </div>
+
+  )}
+
+  {chatHistory.map((chat, index) => (
 
           <div
             key={index}

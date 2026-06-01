@@ -1116,3 +1116,70 @@ button:hover {
   color: #94a3b8;
 
 }
+
+.welcome-screen {
+
+  text-align: center;
+
+  padding: 80px 30px;
+
+  color: white;
+
+  max-width: 700px;
+
+  margin: 0 auto;
+
+}
+
+.welcome-icon {
+
+  font-size: 70px;
+
+  margin-bottom: 20px;
+
+}
+
+.welcome-screen h2 {
+
+  color: #8ab4ff;
+
+  margin-bottom: 15px;
+
+}
+
+.welcome-screen p {
+
+  margin-bottom: 35px;
+
+  opacity: 0.9;
+
+  font-size: 16px;
+
+}
+
+.welcome-features {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+
+  font-size: 15px;
+
+}
+
+.welcome-features div {
+
+  background: rgba(
+    255,
+    255,
+    255,
+    0.05
+  );
+
+  padding: 12px;
+
+  border-radius: 10px;
+
+}

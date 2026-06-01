@@ -76,7 +76,7 @@ def retrieve_relevant_chunks(
     query,
     user_id,
     collection_name="general",
-    top_k=3
+    top_k=2
 ):
 
     collection = get_collection(
@@ -86,12 +86,19 @@ def retrieve_relevant_chunks(
     query_embedding = create_embedding(query)
 
     results = collection.query(
-        query_embeddings=[query_embedding],
-        n_results=top_k,
-        where={
-            "user_id": user_id
-        }
-    )
+    query_embeddings=[query_embedding],
+    n_results=top_k,
+    where={
+        "user_id": user_id
+    },
+    include=[
+        "documents",
+        "metadatas",
+        "distances"
+    ]
+)
+    print("DISTANCES:")
+    print(results["distances"])
 
     documents = results["documents"][0]
     metadatas = results["metadatas"][0]

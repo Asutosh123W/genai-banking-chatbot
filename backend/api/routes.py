@@ -1,5 +1,7 @@
 from fastapi import Depends
 
+from fastapi.responses import StreamingResponse
+
 from sqlalchemy.orm import Session
 
 from backend.database.database import (
@@ -24,7 +26,8 @@ from backend.services.vector_store import (
 )
 
 from backend.services.llm_service import (
-    generate_response
+    generate_response,
+    stream_response
 )
 from backend.services.session_service import (
     create_session,
@@ -639,3 +642,101 @@ def debug_documents(
         "count": len(results["metadatas"]),
         "metadatas": results["metadatas"][:10]
     }
+
+@router.post("/chat-stream")
+def chat_stream(
+    request: ChatRequest,
+    email: str = Depends(
+        get_current_email
+    ),
+    db: Session = Depends(
+        get_db
+    )
+):
+
+    user = get_user_by_email(
+        email,
+        db
+    )
+
+    if not user:
+
+        return {
+            "message":
+            "Unauthorized user"
+        }
+
+    session = (
+        db.query(ChatSession)
+        .filter(
+            ChatSession.id == request.session_id,
+            ChatSession.user_id == user.id
+        )
+        .first()
+    )
+
+    if not session:
+
+        return {
+            "message":
+            "Invalid session"
+        }
+
+    # Auto-title first message
+    if session.title == "New Chat":
+
+        update_session_title(
+            session_id=session.id,
+            title=request.message[:40],
+            db=db
+        )
+
+    # Save user message
+    save_message(
+        session_id=request.session_id,
+        sender="user",
+        content=request.message,
+        sources="",
+        db=db
+    )
+
+    retrieved_chunks, metadata = (
+        retrieve_relevant_chunks(
+            query=request.message,
+            user_id=user.id,
+            collection_name=request.knowledge_base
+        )
+    )
+
+    sources = list(
+        set(
+            item["source"]
+            for item in metadata
+        )
+    )
+
+    def generate():
+
+        full_response = ""
+
+        for token in stream_response(
+            request.message,
+            retrieved_chunks
+        ):
+
+            full_response += token
+
+            yield token
+
+        save_message(
+            session_id=request.session_id,
+            sender="bot",
+            content=full_response,
+            sources=", ".join(sources),
+            db=db
+        )
+
+    return StreamingResponse(
+        generate(),
+        media_type="text/plain"
+    )

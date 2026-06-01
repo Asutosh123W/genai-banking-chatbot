@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy.orm import Session
 
 from backend.database.models import (
@@ -92,7 +94,21 @@ def save_message(
 
     db.add(message)
 
+    session = (
+        db.query(ChatSession)
+        .filter(
+            ChatSession.id == session_id
+        )
+        .first()
+    )
+
+    if session:
+
+        session.updated_at = datetime.utcnow()
+
     db.commit()
+
+    db.refresh(message)
 
     return message
 
@@ -126,6 +142,8 @@ def get_session_messages(
         )
         .all()
     )
+
+
 def update_session_title(
     session_id: int,
     title: str,
@@ -141,9 +159,12 @@ def update_session_title(
     )
 
     if not session:
+
         return None
 
     session.title = title
+
+    session.updated_at = datetime.utcnow()
 
     db.commit()
 
