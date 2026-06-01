@@ -35,7 +35,8 @@ from backend.services.session_service import (
     delete_session,
     get_session_messages,
     save_message,
-    update_session_title
+    update_session_title,
+    get_recent_messages
 )
 
 from backend.services.document_processor import (
@@ -491,9 +492,16 @@ def chat(
         )
     )
 
+    history_messages = get_recent_messages(
+    session_id=request.session_id,
+    limit=6,
+    db=db
+)
+
     ai_response = generate_response(
         request.message,
-        retrieved_chunks
+        retrieved_chunks,
+        history_messages
     )
 
     sources = list(
@@ -708,6 +716,12 @@ def chat_stream(
         )
     )
 
+    history_messages = get_recent_messages(
+    session_id=request.session_id,
+    limit=6,
+    db=db
+)
+
     sources = list(
         set(
             item["source"]
@@ -721,7 +735,8 @@ def chat_stream(
 
         for token in stream_response(
             request.message,
-            retrieved_chunks
+            retrieved_chunks,
+            history_messages
         ):
 
             full_response += token

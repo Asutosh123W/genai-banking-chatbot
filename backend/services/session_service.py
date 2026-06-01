@@ -169,3 +169,21 @@ def update_session_title(
     db.commit()
 
     return session
+
+def get_recent_messages(
+    session_id,
+    limit,
+    db: Session
+):
+
+    return (
+        db.query(ChatMessage)
+        .filter(
+            ChatMessage.session_id == session_id
+        )
+        .order_by(
+            ChatMessage.created_at.desc()
+        )
+        .limit(limit)
+        .all()
+    )
