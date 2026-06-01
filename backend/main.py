@@ -1,6 +1,13 @@
 from fastapi import FastAPI
 from backend.api.routes import router
 from fastapi.middleware.cors import CORSMiddleware
+from backend.database.database import engine
+from backend.database.models import Base
+from backend.api.auth_routes import router as auth_router
+
+Base.metadata.create_all(
+    bind=engine
+)
 
 app = FastAPI(
     title="GenAI Banking Chatbot",
@@ -17,3 +24,4 @@ app.add_middleware(
 )
 
 app.include_router(router)
+app.include_router(auth_router)
