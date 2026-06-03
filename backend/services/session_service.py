@@ -4,7 +4,8 @@ from sqlalchemy.orm import Session
 
 from backend.database.models import (
     ChatSession,
-    ChatMessage
+    ChatMessage,
+    EvaluationMetric
 )
 
 
@@ -66,9 +67,19 @@ def delete_session(
 
         return False
 
+    # Delete evaluation metrics first
+
+    db.query(EvaluationMetric).filter(
+        EvaluationMetric.session_id == session_id
+    ).delete()
+
+    # Delete chat messages
+
     db.query(ChatMessage).filter(
         ChatMessage.session_id == session_id
     ).delete()
+
+    # Delete session
 
     db.delete(session)
 

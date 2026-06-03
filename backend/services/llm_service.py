@@ -1,7 +1,184 @@
-import requests
+import os
 
-OLLAMA_URL = "http://localhost:11434/api/generate"
+from groq import Groq
+from dotenv import load_dotenv
 
+load_dotenv()
+
+client = Groq(
+    api_key=os.getenv(
+        "GROQ_API_KEY"
+    )
+)
+
+def rewrite_query(
+    query,
+    history_messages
+):
+
+    history_text = ""
+
+    for message in history_messages[-4:]:
+
+        history_text += (
+            f"{message.sender}: "
+            f"{message.content}\n"
+        )
+
+    prompt = f"""
+You are a search query optimizer.
+
+Rewrite the user's latest question
+into a complete standalone search query.
+
+Rules:
+- Preserve the exact meaning
+- Add missing context from conversation history
+- Do NOT broaden the topic
+- Do NOT generalize
+- Do NOT answer the question
+- Output only the rewritten query
+
+Bad Example:
+User Question:
+What is internship duration?
+
+Bad Rewrite:
+Internship duration for various fields and locations
+
+Good Rewrite:
+What is the duration of the Generative AI internship?
+
+Conversation:
+{history_text}
+
+User Question:
+{query}
+
+Rewritten Query:
+"""
+
+    payload = {
+        "model": "mistral",
+        "prompt": prompt,
+        "stream": False
+    }
+
+    try:
+
+        response = requests.post(
+            OLLAMA_URL,
+            json=payload
+        )
+
+        result = response.json()
+
+        rewritten_query = result.get(
+            "response",
+            query
+        )
+
+        print(
+            "REWRITTEN QUERY:",
+            rewritten_query
+        )
+
+        return rewritten_query.strip()
+
+    except Exception:
+
+        return query
+    
+    
+def generate_search_queries(
+    query
+):
+
+    prompt = f"""
+You are a retrieval query generator.
+
+Generate exactly 3 short search queries.
+
+Rules:
+- Maximum 6 words each
+- No numbering
+- No bullet points
+- No quotes
+- No explanations
+- Focus on keywords
+- Optimize for document retrieval
+
+User Query:
+{query}
+
+Search Queries:
+"""
+
+    payload = {
+        "model": "mistral",
+        "prompt": prompt,
+        "stream": False
+    }
+
+    try:
+
+        response = requests.post(
+            OLLAMA_URL,
+            json=payload
+        )
+
+        result = response.json()
+
+        text = result.get(
+            "response",
+            ""
+        )
+
+        queries = []
+
+        for line in text.split("\n"):
+
+            line = line.strip()
+
+            if not line:
+                continue
+
+            line = line.replace('"', "")
+
+            if line.startswith("1."):
+                line = line[2:].strip()
+
+            elif line.startswith("2."):
+               line = line[2:].strip()
+
+            elif line.startswith("3."):
+               line = line[2:].strip()
+
+            queries.append(line)
+
+        queries = queries[:3]
+
+        print(
+            "MULTI QUERIES:"
+        )
+
+        print(
+            queries
+        )
+
+        print(
+    "SEARCH QUERIES:"
+)
+
+        print(
+            queries
+)
+
+        return queries
+
+    except Exception:
+
+        return [query]
 
 def generate_response(
     query,
@@ -57,34 +234,90 @@ Current User Question:
 Helpful Answer:
 """
 
-    payload = {
-        "model": "mistral",
-        "prompt": prompt,
-        "stream": False,
-        "options": {
-            "temperature": 0.3,
-            "top_p": 0.9
-        }
-    }
+    try:
+
+        response = client.chat.completions.create(
+
+            model="llama-3.3-70b-versatile",
+
+            messages=[
+
+            {
+                "role": "user",
+                "content": prompt
+            }
+
+        ],
+
+            temperature=0.3
+
+    )
+
+        result = (
+            response.choices[0]
+            .message
+            .content
+    )
+
+        print(
+        "GROQ RESPONSE:"
+    )
+
+        print(result)
+
+        return result
+
+    except Exception as error:
+
+        print(
+        "ERROR:",
+        error
+    )
+
+        return (
+        "Error generating response."
+    )
+    
+    # =====================================
+# SIMPLE LLM RESPONSE
+# =====================================
+
+def generate_simple_response(
+    prompt
+):
 
     try:
 
-        response = requests.post(
-            OLLAMA_URL,
-            json=payload
+        response = client.chat.completions.create(
+
+            model="llama-3.3-70b-versatile",
+
+            messages=[
+
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+
+            ],
+
+            temperature=0.3
+
         )
 
-        result = response.json()
+        result = (
+            response.choices[0]
+            .message
+            .content
+        )
 
-        print("OLLAMA RESPONSE:")
+        print(
+            "GROQ RESPONSE:"
+        )
+
         print(result)
 
-        ai_response = result.get(
-            "response",
-            "No response generated"
-        )
-
-        return ai_response
+        return result
 
     except Exception as error:
 
@@ -94,8 +327,7 @@ Helpful Answer:
         )
 
         return (
-            "Error generating response "
-            "from local LLM."
+            "Error generating response."
         )
 
 
@@ -150,41 +382,38 @@ Current User Question:
 Helpful Answer:
 """
 
-    payload = {
-        "model": "mistral",
-        "prompt": prompt,
-        "stream": True,
-        "options": {
-            "temperature": 0.3,
-            "top_p": 0.9
-        }
-    }
-
     try:
 
-        response = requests.post(
-            OLLAMA_URL,
-            json=payload,
+        stream = client.chat.completions.create(
+
+            model="llama-3.3-70b-versatile",
+
+            messages=[
+
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+
+            ],
+
+            temperature=0.3,
+
             stream=True
+
         )
 
-        for line in response.iter_lines():
+        for chunk in stream:
 
-            if not line:
-                continue
-
-            import json
-
-            chunk = json.loads(
-                line.decode("utf-8")
+            content = (
+                chunk.choices[0]
+                .delta
+                .content
             )
 
-            token = chunk.get(
-                "response",
-                ""
-            )
+            if content:
 
-            yield token
+                yield content
 
     except Exception as error:
 

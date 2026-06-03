@@ -125,3 +125,35 @@ class ChatMessage(Base):
     session = relationship(
         "ChatSession"
     )
+
+class EvaluationMetric(Base):
+
+        __tablename__ = "evaluation_metrics"
+
+        id = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
+
+        session_id = Column(
+          Integer,
+          ForeignKey("chat_sessions.id")
+    )
+
+        answer_relevancy = Column(
+        String
+    )
+
+        faithfulness = Column(
+        String
+    )
+
+        context_precision = Column(
+        String
+    )
+
+        created_at = Column(
+        DateTime,
+        default=datetime.utcnow
+    )

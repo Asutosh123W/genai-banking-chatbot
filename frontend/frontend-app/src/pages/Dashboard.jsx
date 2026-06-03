@@ -6,6 +6,15 @@ import {apiFetch} from "../services/api";
 
 function Dashboard() {
 
+  const getCurrentTime = () => {
+
+    return new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+  };
+
   const {
   logout,
   user
@@ -42,6 +51,49 @@ const [currentSessionId,
     total_documents: 0,
     total_chunks: 0
   });
+
+  const [analytics, setAnalytics] =
+  useState({
+    avg_relevancy: 0,
+    avg_faithfulness: 0,
+    avg_precision: 0,
+    total_evaluations: 0
+  });
+
+  const qualityScore = (
+  (
+    analytics.avg_relevancy +
+    analytics.avg_faithfulness +
+    analytics.avg_precision
+  ) / 3 * 100
+).toFixed(1);
+
+const getMetricStatus = (value) => {
+
+  if (value >= 0.75) {
+
+    return {
+      label: "Good",
+      className: "metric-good"
+    };
+
+  }
+
+  if (value >= 0.50) {
+
+    return {
+      label: "Moderate",
+      className: "metric-moderate"
+    };
+
+  }
+
+  return {
+    label: "Needs Improvement",
+    className: "metric-poor"
+  };
+
+};
 
   const chatContainerRef = useRef(null);
 
@@ -160,6 +212,16 @@ const loadSession = async (
     const data =
       await response.json();
 
+    console.log(
+       "SESSION DATA:",
+        data
+);
+
+console.log(
+  "SESSION DATA:",
+  data
+);
+
     const formattedMessages =
       data.map((msg) => ({
 
@@ -177,7 +239,18 @@ const loadSession = async (
                 .filter(Boolean)
             : [],
 
-        time: ""
+        time: msg.created_at
+  ? new Date(
+      msg.created_at + "Z"
+    ).toLocaleTimeString(
+      "en-IN",
+      {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit",
+        minute: "2-digit"
+      }
+    )
+  : getCurrentTime()
 
       }));
 
@@ -353,6 +426,35 @@ const fetchStats = async () => {
 
 };
 
+const fetchAnalytics = async () => {
+
+  try {
+
+    const response =
+      await apiFetch(
+        "http://127.0.0.1:8000/analytics",
+        {
+          headers: {
+            Authorization:
+              `Bearer ${token}`
+          }
+        },
+        logout
+      );
+
+    const data =
+      await response.json();
+
+    setAnalytics(data);
+
+  } catch (error) {
+
+    console.log(error);
+
+  }
+
+};
+
 const deleteDocument = async (filename) => {
 
   const confirmDelete = window.confirm(
@@ -393,6 +495,7 @@ const deleteDocument = async (filename) => {
 
   fetchDocuments();
   fetchStats();
+  fetchAnalytics();
   fetchSessions();
 
 }, [knowledgeBase]);
@@ -449,14 +552,7 @@ useEffect(() => {
 
   }, [chatHistory, loading]);
 
-  const getCurrentTime = () => {
-
-    return new Date().toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-
-  };
+  
 
   const clearChat = () => {
 
@@ -668,6 +764,7 @@ while (true) {
   } = await reader.read();
 
   if (done) {
+    await fetchAnalytics();
     break;
   }
 
@@ -1018,33 +1115,159 @@ fetchSessions();
 
   <div className="stats-section">
 
+  <div className="stat-box">
+
+    <span className="stat-label">
+      Documents
+    </span>
+
+    <span className="stat-value">
+      {stats.total_documents}
+    </span>
+
+  </div>
+
+  <div className="stat-box">
+
+    <span className="stat-label">
+      Chunks
+    </span>
+
+    <span className="stat-value">
+      {stats.total_chunks}
+    </span>
+
+  </div>
+
+</div>
+
+{/* =========================
+    RAG EVALUATION DASHBOARD
+========================= */}
+
+<div className="analytics-section">
+
+  <h3>
+    📊 RAG Evaluation
+  </h3>
+
+  <div className="quality-score-card">
+
+    <div className="quality-title">
+      Overall RAG Score
+    </div>
+
+    <div className="quality-value">
+      {qualityScore}%
+    </div>
+
+  </div>
+
+  <div className="stats-section">
+
+    <div className="stat-box">
+
+  <span className="stat-label">
+    Relevancy
+  </span>
+
+  <span className="stat-value">
+    {(analytics.avg_relevancy * 100).toFixed(1)}%
+  </span>
+
+  <span
+    className={
+      getMetricStatus(
+        analytics.avg_relevancy
+      ).className
+    }
+  >
+
+    {
+      getMetricStatus(
+        analytics.avg_relevancy
+      ).label
+    }
+
+  </span>
+
+</div>
+
     <div className="stat-box">
 
       <span className="stat-label">
-        Documents
+        Faithfulness
       </span>
 
       <span className="stat-value">
-        {stats.total_documents}
-      </span>
+  {(analytics.avg_faithfulness * 100).toFixed(1)}%
+</span>
+
+<span
+  className={
+    getMetricStatus(
+      analytics.avg_faithfulness
+    ).className
+  }
+>
+
+  {
+    getMetricStatus(
+      analytics.avg_faithfulness
+    ).label
+  }
+
+</span>
 
     </div>
 
     <div className="stat-box">
 
       <span className="stat-label">
-        Chunks
+        Precision
       </span>
 
       <span className="stat-value">
-        {stats.total_chunks}
+  {(analytics.avg_precision * 100).toFixed(1)}%
+</span>
+
+<span
+  className={
+    getMetricStatus(
+      analytics.avg_precision
+    ).className
+  }
+>
+
+  {
+    getMetricStatus(
+      analytics.avg_precision
+    ).label
+  }
+
+</span>
+
+    </div>
+
+    <div className="stat-box">
+
+      <span className="stat-label">
+        Evaluations
+      </span>
+
+      <span className="stat-value">
+        {analytics.total_evaluations}
       </span>
 
     </div>
 
   </div>
 
-  {documents.length === 0 ? (
+</div>
+
+{/* Documents List Starts Here */}
+
+{documents.length === 0 ? (
 
   <p className="empty-docs">
     No documents uploaded.
@@ -1078,13 +1301,13 @@ fetchSessions();
     ))
 )}
 
-  <div className="document-count">
+<div className="document-count">
 
-    Total Documents:
-    {" "}
-    {documents.length}
+  Total Documents:
+  {" "}
+  {documents.length}
 
-  </div>
+</div>
 
 </div>
 
