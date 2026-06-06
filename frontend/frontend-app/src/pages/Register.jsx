@@ -41,7 +41,7 @@ function Register() {
     try {
 
       const response = await fetch(
-        "http://127.0.0.1:8000/auth/register",
+        "https://genai-rag-backend-asu-a8cjhsevdhbgftg9.centralindia-01.azurewebsites.net/auth/register",
         {
           method: "POST",
           headers: {

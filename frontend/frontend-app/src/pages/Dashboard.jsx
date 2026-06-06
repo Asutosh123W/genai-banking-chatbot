@@ -102,7 +102,7 @@ const getMetricStatus = (value) => {
   try {
 
     const response = await apiFetch(
-      "http://127.0.0.1:8000/sessions",
+      "https://genai-rag-backend-asu-a8cjhsevdhbgftg9.centralindia-01.azurewebsites.net/sessions",
       {
         method: "POST",
         headers: {
@@ -139,7 +139,7 @@ const fetchSessions = async () => {
   try {
 
     const response = await apiFetch(
-      "http://127.0.0.1:8000/sessions",
+      "https://genai-rag-backend-asu-a8cjhsevdhbgftg9.centralindia-01.azurewebsites.net/sessions",
       {
         headers: {
           Authorization:
@@ -199,7 +199,7 @@ const loadSession = async (
   try {
 
     const response = await apiFetch(
-      `http://127.0.0.1:8000/sessions/${sessionId}/messages`,
+      `https://genai-rag-backend-asu-a8cjhsevdhbgftg9.centralindia-01.azurewebsites.net/sessions/${sessionId}/messages`,
       {
         headers: {
           Authorization:
@@ -285,7 +285,7 @@ const deleteSession = async (
   try {
 
     await apiFetch(
-      `http://127.0.0.1:8000/sessions/${sessionId}`,
+      `https://genai-rag-backend-asu-a8cjhsevdhbgftg9.centralindia-01.azurewebsites.net/sessions/${sessionId}`,
       {
         method: "DELETE",
         headers: {
@@ -340,7 +340,7 @@ const renameSession = async (
   try {
 
     await apiFetch(
-      `http://127.0.0.1:8000/sessions/${sessionId}`,
+      `https://genai-rag-backend-asu-a8cjhsevdhbgftg9.centralindia-01.azurewebsites.net/sessions/${sessionId}`,
       {
         method: "PUT",
 
@@ -375,7 +375,7 @@ const renameSession = async (
   try {
 
     const response = await apiFetch(
-  `http://127.0.0.1:8000/documents/${knowledgeBase}`,
+  `https://genai-rag-backend-asu-a8cjhsevdhbgftg9.centralindia-01.azurewebsites.net/documents/${knowledgeBase}`,
   {
     headers: {
       Authorization:
@@ -404,7 +404,7 @@ const fetchStats = async () => {
   try {
 
     const response = await apiFetch(
-  `http://127.0.0.1:8000/stats/${knowledgeBase}`,
+  `https://genai-rag-backend-asu-a8cjhsevdhbgftg9.centralindia-01.azurewebsites.net/stats/${knowledgeBase}`,
   {
     headers: {
       Authorization:
@@ -432,7 +432,7 @@ const fetchAnalytics = async () => {
 
     const response =
       await apiFetch(
-        "http://127.0.0.1:8000/analytics",
+        "https://genai-rag-backend-asu-a8cjhsevdhbgftg9.centralindia-01.azurewebsites.net/analytics",
         {
           headers: {
             Authorization:
@@ -468,7 +468,7 @@ const deleteDocument = async (filename) => {
   try {
 
     await apiFetch(
-  `http://127.0.0.1:8000/documents/${knowledgeBase}/${filename}`,
+  `https://genai-rag-backend-asu-a8cjhsevdhbgftg9.centralindia-01.azurewebsites.net/documents/${knowledgeBase}/${filename}`,
   {
     method: "DELETE",
 
@@ -654,7 +654,7 @@ formData.append(
     try {
 
       const response = await apiFetch(
-  "http://127.0.0.1:8000/upload",
+  "https://genai-rag-backend-asu-a8cjhsevdhbgftg9.centralindia-01.azurewebsites.net/upload",
   {
     method: "POST",
 
@@ -714,7 +714,7 @@ formData.append(
     try {
 
       const response = await apiFetch(
-        "http://127.0.0.1:8000/chat-stream",
+        "https://genai-rag-backend-asu-a8cjhsevdhbgftg9.centralindia-01.azurewebsites.net/chat-stream",
         {
           method: "POST",
           headers: {

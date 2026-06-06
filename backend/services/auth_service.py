@@ -12,7 +12,6 @@ load_dotenv()
 SECRET_KEY = os.getenv(
     "SECRET_KEY"
 )
-print("SECRET_KEY:", SECRET_KEY)
 
 
 ALGORITHM = "HS256"

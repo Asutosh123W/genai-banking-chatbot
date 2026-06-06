@@ -37,7 +37,7 @@ function Login() {
     try {
 
       const response = await fetch(
-        "http://127.0.0.1:8000/auth/login",
+        "https://genai-rag-backend-asu-a8cjhsevdhbgftg9.centralindia-01.azurewebsites.net/auth/login",
         {
           method: "POST",
           headers: {
@@ -61,7 +61,7 @@ function Login() {
 
   const meResponse =
     await fetch(
-      "http://127.0.0.1:8000/auth/me",
+      "https://genai-rag-backend-asu-a8cjhsevdhbgftg9.centralindia-01.azurewebsites.net/auth/me",
       {
         headers: {
           Authorization:
