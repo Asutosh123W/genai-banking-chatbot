@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from backend.database.models import User
+from database.models import User
 
 
 def get_user_by_email(

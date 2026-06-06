@@ -1,8 +1,8 @@
-from backend.services.vector_store import (
+from services.vector_store import (
     get_document_chunks
 )
 
-from backend.services.llm_service import (
+from services.llm_service import (
     generate_response
 )
 

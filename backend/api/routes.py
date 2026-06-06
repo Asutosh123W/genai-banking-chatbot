@@ -4,26 +4,26 @@ from fastapi.responses import StreamingResponse
 
 from sqlalchemy.orm import Session
 
-from backend.database.database import (
+from database.database import (
     get_db
 )
-from backend.database.models import (
+from database.models import (
     EvaluationMetric
 )
 
-from backend.services.token_service import (
+from services.token_service import (
     get_current_email
 )
 
-from backend.services.user_service import (
+from services.user_service import (
     get_user_by_email
 )
 
-from backend.services.evaluation_db_service import (
+from services.evaluation_db_service import (
     save_evaluation_metric
 )
 
-from backend.services.agent_service import (
+from services.agent_service import (
     choose_tool,
     plan_tools,
     compare_documents,
@@ -31,17 +31,17 @@ from backend.services.agent_service import (
     synthesize_tool_results,
     match_job_requirements
 )
-from backend.services.document_summary_service import (
+from services.document_summary_service import (
     summarize_documents
 )
 
-from backend.services.evaluation_service import (
+from services.evaluation_service import (
     calculate_answer_relevancy,
     calculate_faithfulness,
     calculate_context_precision
 )
 
-from backend.services.vector_store import (
+from services.vector_store import (
     retrieve_relevant_chunks,
     store_chunks,
     get_documents,
@@ -51,13 +51,13 @@ from backend.services.vector_store import (
     retrieve_multi_query_chunks
 )
 
-from backend.services.llm_service import (
+from services.llm_service import (
     generate_response,
     stream_response,
     rewrite_query,
     generate_search_queries
 )
-from backend.services.session_service import (
+from services.session_service import (
     create_session,
     get_user_sessions,
     delete_session,
@@ -67,7 +67,7 @@ from backend.services.session_service import (
     get_recent_messages
 )
 
-from backend.services.document_processor import (
+from services.document_processor import (
     extract_text_from_pdf,
     extract_text_from_txt,
     chunk_text
@@ -80,14 +80,14 @@ from fastapi import (
     Form
 )
 
-from backend.models.session_models import (
+from models.session_models import (
     RenameSessionRequest
 )
 
-from backend.models.chat_models import (
+from models.chat_models import (
     ChatRequest
 )
-from backend.database.models import ChatSession
+from database.models import ChatSession
 
 import os
 

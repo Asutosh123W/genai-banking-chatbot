@@ -5,7 +5,7 @@ from fastapi.security import (
 
 from fastapi import Depends
 
-from backend.services.auth_service import (
+from services.auth_service import (
     verify_token
 )
 

@@ -1,6 +1,6 @@
 from sentence_transformers import util
 
-from backend.services.vector_store import (
+from services.vector_store import (
     embedding_model
 )
 

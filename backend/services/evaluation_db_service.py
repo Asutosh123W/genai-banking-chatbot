@@ -1,4 +1,4 @@
-from backend.database.models import (
+from database.models import (
     EvaluationMetric
 )
 

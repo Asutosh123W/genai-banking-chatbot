@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlalchemy.orm import Session
 
-from backend.database.models import (
+from database.models import (
     ChatSession,
     ChatMessage,
     EvaluationMetric

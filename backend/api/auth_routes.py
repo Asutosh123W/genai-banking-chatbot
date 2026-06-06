@@ -5,24 +5,24 @@ from sqlalchemy.orm import Session
 
 from fastapi.security import HTTPBearer
 from fastapi.security import HTTPAuthorizationCredentials
-from backend.database.database import get_db
-from backend.database.models import User
-from backend.models.auth_models import RegisterRequest
-from backend.services.auth_service import (
+from database.database import get_db
+from database.models import User
+from models.auth_models import RegisterRequest
+from services.auth_service import (
     hash_password
 )
-from backend.models.auth_models import (
+from models.auth_models import (
     LoginRequest,
     TokenResponse
 )
 
-from backend.services.auth_service import (
+from services.auth_service import (
     verify_password,
     create_access_token,
     verify_token
 )
 
-from backend.services.token_service import (
+from services.token_service import (
     get_current_email
 )
 

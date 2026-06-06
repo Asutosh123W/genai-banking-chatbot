@@ -1,8 +1,8 @@
-from backend.services.llm_service import (
+from services.llm_service import (
     generate_simple_response
 )
 
-from backend.services.vector_store import (
+from services.vector_store import (
     get_documents,
     get_collection
 )
