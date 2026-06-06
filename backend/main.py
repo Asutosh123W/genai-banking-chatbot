@@ -1,3 +1,8 @@
+import pysqlite3
+import sys
+
+sys.modules["sqlite3"] = pysqlite3
+
 from fastapi import FastAPI
 from api.routes import router
 from fastapi.middleware.cors import CORSMiddleware
