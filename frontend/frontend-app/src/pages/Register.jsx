@@ -102,7 +102,7 @@ function Register() {
       </h1>
 
       <p className="auth-subtitle">
-        Start using the AI Banking Assistant
+        Start using the AI Enterprise Knowledge Assistant
       </p>
 
       <form

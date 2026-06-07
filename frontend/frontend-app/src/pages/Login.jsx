@@ -103,7 +103,7 @@ function Login() {
     <div className="auth-card">
 
       <h1 className="auth-title">
-        GenAI Banking Chatbot
+        FinIntel AI
       </h1>
 
       <p className="auth-subtitle">

@@ -1,17 +1,21 @@
-# GenAI Banking Chatbot
+# FinIntel AI
 
-An AI-powered Banking Assistant using Retrieval-Augmented Generation (RAG).
+Enterprise Knowledge Intelligence Platform powered by Retrieval Augmented Generation (RAG), Vector Search and Conversational AI.
 
 ## Features
 
-- PDF/TXT document upload
-- Semantic search using Vector Database
-- RAG-based response generation
-- Conversational chatbot memory
-- Modern responsive UI
-- Ollama + Mistral integration
-- FastAPI backend
-- React frontend
+## Features
+
+- JWT Authentication
+- Multi-Session Conversational AI
+- Knowledge Base Management
+- Document Upload & Processing
+- Retrieval Augmented Generation (RAG)
+- Semantic Vector Search
+- Cross-Encoder Re-ranking
+- Analytics Dashboard
+- Azure Cloud Deployment
+- Vercel Frontend Deployment
 
 ---
 
@@ -25,17 +29,22 @@ An AI-powered Banking Assistant using Retrieval-Augmented Generation (RAG).
 ## Backend
 - FastAPI
 - Python
+- PostgreSQL
+- ChromaDB
 
 ## AI Stack
 - Ollama
 - Mistral
 - Sentence Transformers
 - ChromaDB
+- Cross Encoder Reranking
+- RAG Pipeline
 
 ---
 
 # Architecture
 
+```text
 User Query
 ↓
 Frontend (React)
@@ -53,6 +62,7 @@ Mistral LLM (Ollama)
 Generated Response
 ↓
 Frontend Chat UI
+```
 
 ---
 
@@ -89,9 +99,8 @@ npm run dev
 
 # Deployment
 
-Frontend deployed using Vercel.
-
-Backend currently runs locally using Ollama + Mistral.
+- Azure App Service
+- Vercel
 
 ---
 
