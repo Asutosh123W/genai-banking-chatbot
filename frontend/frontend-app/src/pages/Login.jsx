@@ -98,23 +98,26 @@ function Login() {
   };
 
   return (
+  <div className="login-container">
 
-    <div className="login-container">
+    <div className="auth-card">
 
-      <h2>Login</h2>
+      <h1 className="auth-title">
+        GenAI Banking Chatbot
+      </h1>
 
-      <form
-        onSubmit={handleLogin}
-      >
+      <p className="auth-subtitle">
+        AI-powered Banking Assistant
+      </p>
+
+      <form onSubmit={handleLogin}>
 
         <input
           type="email"
-          placeholder="Email"
+          placeholder="Email Address"
           value={email}
           onChange={(e) =>
-            setEmail(
-              e.target.value
-            )
+            setEmail(e.target.value)
           }
         />
 
@@ -123,32 +126,27 @@ function Login() {
           placeholder="Password"
           value={password}
           onChange={(e) =>
-            setPassword(
-              e.target.value
-            )
+            setPassword(e.target.value)
           }
         />
 
-        <button
-          type="submit"
-        >
-          Login
+        <button type="submit">
+          Sign In
         </button>
 
       </form>
 
       <p>
-
-  Don't have an account?{" "}
-
-  <Link to="/register">
-    Register
-  </Link>
-
-</p>
+        Don't have an account?{" "}
+        <Link to="/register">
+          Register
+        </Link>
+      </p>
 
     </div>
-  );
+
+  </div>
+);
 }
 
 export default Login;

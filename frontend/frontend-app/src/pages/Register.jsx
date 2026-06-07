@@ -93,12 +93,17 @@ function Register() {
   };
 
   return (
+  <div className="login-container">
 
-    <div className="login-container">
+    <div className="auth-card">
 
-      <h2>
+      <h1 className="auth-title">
         Create Account
-      </h2>
+      </h1>
+
+      <p className="auth-subtitle">
+        Start using the AI Banking Assistant
+      </p>
 
       <form
         onSubmit={handleRegister}
@@ -117,7 +122,7 @@ function Register() {
 
         <input
           type="email"
-          placeholder="Email"
+          placeholder="Email Address"
           value={email}
           onChange={(e) =>
             setEmail(
@@ -152,31 +157,26 @@ function Register() {
           type="submit"
           disabled={loading}
         >
-
           {
             loading
               ? "Creating..."
-              : "Register"
+              : "Create Account"
           }
-
         </button>
 
       </form>
 
       <p>
-
-        Already have an account?
-
-        {" "}
-
+        Already have an account?{" "}
         <Link to="/login">
           Login
         </Link>
-
       </p>
 
     </div>
-  );
+
+  </div>
+);
 }
 
 export default Register;

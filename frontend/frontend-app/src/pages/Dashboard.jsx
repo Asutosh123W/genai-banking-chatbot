@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import ReactMarkdown from "react-markdown";
 import {apiFetch} from "../services/api";
 
+
 function Dashboard() {
 
   const getCurrentTime = () => {
@@ -24,6 +25,9 @@ function Dashboard() {
   const [showProfileMenu,
   setShowProfileMenu] =
   useState(false);
+
+  const [sidebarOpen, setSidebarOpen] =
+  useState(true);
 
   const [message, setMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
@@ -834,107 +838,129 @@ fetchSessions();
 
   <div className="app-layout">
 
-    <div className="sidebar">
-
-      <div className="sidebar-header">
-
-        <button
-          className="new-chat-btn"
-          onClick={createSession}
-        >
-          + New Chat
-        </button>
-
-      </div>
-
-      <div className="session-search-container">
-
-  <input
-    type="text"
-    placeholder="🔍 Search chats..."
-    value={sessionSearch}
-    onChange={(e) =>
-      setSessionSearch(
-        e.target.value
-      )
-    }
-    className="session-search-input"
-  />
-
-</div>
-
-      <div className="sessions-list">
-
-        {filteredSessions.map((session) => (
-
-          <div
-  key={session.id}
+    <div
   className={
-    currentSessionId === session.id
-      ? "session-item active"
-      : "session-item"
+    sidebarOpen
+      ? "sidebar"
+      : "sidebar collapsed"
   }
 >
+  <div className="sidebar-topbar">
 
-  <div
-    className="session-title"
+  <button
+    className="sidebar-toggle"
     onClick={() =>
-      loadSession(
-        session.id
-      )
+      setSidebarOpen(!sidebarOpen)
     }
   >
-
-    {session.title}
-
-  </div>
-
-  <div className="session-actions">
-
-    <button
-      className="rename-session-btn"
-      onClick={(e) => {
-
-        e.stopPropagation();
-
-        renameSession(
-          session.id,
-          session.title
-        );
-
-      }}
-    >
-
-      ✏️
-
-    </button>
-
-    <button
-      className="delete-session-btn"
-      onClick={(e) => {
-
-        e.stopPropagation();
-
-        deleteSession(
-          session.id
-        );
-
-      }}
-    >
-
-      ✕
-
-    </button>
-
-  </div>
+    ☰
+  </button>
 
 </div>
 
-        ))}
+      {sidebarOpen && (
 
-      </div>
+  <div className="sidebar-header">
+
+    <button
+      className="new-chat-btn"
+      onClick={createSession}
+    >
+      + New Chat
+    </button>
+
+  </div>
+
+)}
+
+      {sidebarOpen && (
+  <>
+    <div className="session-search-container">
+
+      <input
+        type="text"
+        placeholder="🔍 Search chats..."
+        value={sessionSearch}
+        onChange={(e) =>
+          setSessionSearch(
+            e.target.value
+          )
+        }
+        className="session-search-input"
+      />
 
     </div>
+
+    <div className="sessions-list">
+
+      {filteredSessions.map((session) => (
+
+        <div
+          key={session.id}
+          className={
+            currentSessionId === session.id
+              ? "session-item active"
+              : "session-item"
+          }
+        >
+
+          <div
+            className="session-title"
+            onClick={() =>
+              loadSession(
+                session.id
+              )
+            }
+          >
+
+            {session.title}
+
+          </div>
+
+          <div className="session-actions">
+
+            <button
+              className="rename-session-btn"
+              onClick={(e) => {
+
+                e.stopPropagation();
+
+                renameSession(
+                  session.id,
+                  session.title
+                );
+
+              }}
+            >
+              ✏️
+            </button>
+
+            <button
+              className="delete-session-btn"
+              onClick={(e) => {
+
+                e.stopPropagation();
+
+                deleteSession(
+                  session.id
+                );
+
+              }}
+            >
+              ✕
+            </button>
+
+          </div>
+
+        </div>
+
+      ))}
+
+    </div>
+  </>
+)}
+
+</div>
 
     <div className="main-content">
 
@@ -946,17 +972,25 @@ fetchSessions();
     <div className="profile-section">
 
   <button
-    className="profile-btn"
-    onClick={() =>
-      setShowProfileMenu(
-        !showProfileMenu
-      )
-    }
-  >
+  className="profile-btn"
+  onClick={() =>
+    setShowProfileMenu(
+      !showProfileMenu
+    )
+  }
+>
 
-    👤 {user?.username} ▼
+  <div className="avatar-circle">
+    {user?.username
+      ?.charAt(0)
+      ?.toUpperCase()}
+  </div>
 
-  </button>
+  <span>
+    {user?.username}
+  </span>
+
+</button>
 
   {showProfileMenu && (
 
@@ -1002,15 +1036,11 @@ fetchSessions();
     </div>
 
     <h1>
-      GenAI Banking Chatbot
+      FinIntel AI
     </h1>
 
     <p className="subtitle">
-      Intelligent RAG-powered AI Assistant for Document Question Answering
-    </p>
-
-    <p className="backend-note">
-      Backend currently runs locally using Ollama + Mistral.
+      Document Intelligence & Conversational Analytics
     </p>
 
   </div>
@@ -1320,7 +1350,7 @@ fetchSessions();
           className="clear-btn"
           onClick={clearChat}
         >
-          Clear Chat
+          🗑 Clear Chat
         </button>
 
         <button
@@ -1346,7 +1376,7 @@ fetchSessions();
       </div>
 
       <h2>
-        Welcome to GenAI Banking Chatbot
+        Welcome to FinIntel AI
       </h2>
 
       <p>
@@ -1356,19 +1386,19 @@ fetchSessions();
       <div className="welcome-features">
 
         <div>
-          📄 Upload PDF Documents
+          📄 Upload & Analyze Documents
         </div>
 
         <div>
-          🔍 Search Knowledge Bases
+          🧠 AI-Powered Retrieval Augmented Generation
         </div>
 
         <div>
-          💬 Create Multiple Chat Sessions
+          📊 Built-in RAG Evaluation Metrics
         </div>
 
         <div>
-          ⚡ Get AI-Powered Answers
+          💬 Multi-Session Conversational Memory
         </div>
 
       </div>
