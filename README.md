@@ -1,4 +1,4 @@
-# FinIntel AI
+# QuarryAI
 
 Enterprise Knowledge Intelligence Platform powered by Retrieval Augmented Generation (RAG), Vector Search and Conversational AI.
 

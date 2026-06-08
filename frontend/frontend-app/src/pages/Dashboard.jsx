@@ -1036,7 +1036,7 @@ fetchSessions();
     </div>
 
     <h1>
-      FinIntel AI
+      QuarryAI
     </h1>
 
     <p className="subtitle">
@@ -1376,7 +1376,7 @@ fetchSessions();
       </div>
 
       <h2>
-        Welcome to FinIntel AI
+        Welcome to QuarryAI
       </h2>
 
       <p>

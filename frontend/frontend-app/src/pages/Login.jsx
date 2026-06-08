@@ -103,7 +103,7 @@ function Login() {
     <div className="auth-card">
 
       <h1 className="auth-title">
-        FinIntel AI
+        QuarryAI
       </h1>
 
       <p className="auth-subtitle">
